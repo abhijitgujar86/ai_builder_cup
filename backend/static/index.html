@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dhaal</title>
+<meta name="description" content="Dhaal: a silent AI shield that guards people from scams in calls, messages, QR codes and payment requests.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 28 6.5V15c0 7-5.2 12.4-12 15C9.2 27.4 4 22 4 15V6.5Z' fill='%230b5d5b'/%3E%3Cpath d='m10.5 16 3.7 3.7 7.3-7.4' fill='none' stroke='white' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/community.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"></span>
+    <div>
+      <h1>Dhaal</h1>
+      <p class="tag" data-i18n="tagline">Your silent shield against scams.</p>
+    </div>
+  </div>
+  <div class="top-right">
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" class="on">English</button>
+      <button type="button" data-lang="hi">हिंदी</button>
+    </div>
+    <a class="signout" href="/logout" data-i18n="signout">Sign out</a>
+  </div>
+</header>
+
+<main>
+  <nav class="tiles" aria-label="What do you want to check?">
+    <button class="tile" data-panel="check"><b data-i18n="t_check">Check a message, photo or QR</b><span data-i18n="t_check_s">Paste, speak or attach a screenshot</span></button>
+    <button class="tile" data-panel="recording"><b data-i18n="t_rec">Check a call recording</b><span data-i18n="t_rec_s">Upload or record what was said</span></button>
+    <button class="tile" data-panel="pay"><b data-i18n="t_pay">Before I pay</b><span data-i18n="t_pay_s">Three quick questions</span></button>
+    <button class="tile" data-panel="lookup"><b data-i18n="t_lookup">Number, UPI ID or link</b><span data-i18n="t_lookup_s">Check who is asking</span></button>
+    <button class="tile" data-panel="guard"><b data-i18n="t_guard">Phone guard</b><span data-i18n="t_guard_s">See the background warnings (demo)</span></button>
+    <button class="tile danger" data-panel="paid"><b data-i18n="t_paid">I already paid</b><span data-i18n="t_paid_s">First-hour steps, right now</span></button>
+  </nav>
+
+  <section id="panel-check" class="panel" hidden>
+    <h2 data-i18n="t_check">Check a message, photo or QR</h2>
+    <label for="checkText" data-i18n="check_label">What did they say or send?</label>
+    <textarea id="checkText" rows="5" data-i18n-ph="check_ph" placeholder="Example: A CBI officer is on a video call. He says my Aadhaar is in a money laundering case and I must send 5 lakh to an RBI verification account. He said don't tell anyone."></textarea>
+    <div class="row">
+      <button type="button" class="ghost" id="micBtn" data-i18n="speak">Speak</button>
+      <label class="ghost file"><input type="file" id="checkFiles" accept="image/*" multiple><span data-i18n="attach">Attach photo / screenshot / QR</span></label>
+    </div>
+    <div id="checkFileList" class="files"></div>
+    <button type="button" class="primary" id="checkBtn" data-i18n="check_btn">Check now</button>
+  </section>
+
+  <section id="panel-recording" class="panel" hidden>
+    <h2 data-i18n="t_rec">Check a call recording</h2>
+    <p class="hint" data-i18n="rec_hint">Share a call recording or WhatsApp voice note. Or press Record and hold the phone near the call on speaker.</p>
+    <div class="row">
+      <label class="ghost file"><input type="file" id="recFile" accept="audio/*,.opus,.ogg,.m4a,.amr,.3gp,.mp3,.wav,.aac,.webm"><span data-i18n="choose_audio">Choose audio file</span></label>
+      <button type="button" class="ghost" id="recBtn" data-i18n="record">Record</button>
+    </div>
+    <div id="recInfo" class="files"></div>
+    <button type="button" class="primary" id="recCheckBtn" data-i18n="check_btn">Check now</button>
+  </section>
+
+  <section id="panel-pay" class="panel" hidden>
+    <h2 data-i18n="t_pay">Before I pay</h2>
+    <div class="grid2">
+      <label><span data-i18n="amount">Amount</span><input id="payAmount" inputmode="numeric" placeholder="₹ 50,000"></label>
+      <label><span data-i18n="to_whom">To whom</span><input id="payPayee" placeholder="name / UPI ID"></label>
+    </div>
+    <label><span data-i18n="why">Why are you paying?</span><input id="payReason" data-i18n-ph="why_ph" placeholder="e.g. customs fee for a gift parcel"></label>
+    <div class="yn" id="payQs"></div>
+    <button type="button" class="primary" id="payBtn" data-i18n="check_btn">Check now</button>
+  </section>
+
+  <section id="panel-lookup" class="panel" hidden>
+    <h2 data-i18n="t_lookup">Number, UPI ID or link</h2>
+    <label for="lookupVal" data-i18n="lookup_label">Phone number, UPI ID or link</label>
+    <input id="lookupVal" placeholder="+91 98765 00001 · name@ybl · http://...">
+    <label for="lookupCtx" data-i18n="lookup_ctx">Who did they say they are? (optional)</label>
+    <input id="lookupCtx" data-i18n-ph="lookup_ctx_ph" placeholder="e.g. Mumbai police, SBI, electricity office">
+    <div class="row">
+      <button type="button" class="primary" id="lookupBtn" data-i18n="check_btn">Check now</button>
+      <button type="button" class="ghost" id="reportBtn" data-i18n="report">Report as scam</button>
+    </div>
+  </section>
+
+  <section id="panel-guard" class="panel" hidden>
+    <h2 data-i18n="t_guard">Phone guard</h2>
+    <p class="hint" data-i18n="guard_hint">On the phone, Dhaal watches for risky moments in the background. Set a situation to see what it would say.</p>
+    <div class="switches">
+      <label><input type="checkbox" id="gOnCall" checked> <span data-i18n="g_oncall">On a call with an unknown number</span></label>
+      <label><span data-i18n="g_type">Call type</span>
+        <select id="gType"><option value="phone">Phone call</option><option value="whatsapp_voice">WhatsApp voice</option><option value="whatsapp_video" selected>WhatsApp video</option></select></label>
+      <label><span data-i18n="g_mins">Minutes on the call</span> <input type="number" id="gMins" min="0" max="600" value="25"></label>
+      <label><input type="checkbox" id="gPay"> <span data-i18n="g_pay">Opened a bank / UPI app</span></label>
+      <label><input type="checkbox" id="gRemoteInst"> <span data-i18n="g_remote_i">AnyDesk installed</span></label>
+      <label><input type="checkbox" id="gRemoteRun"> <span data-i18n="g_remote_r">AnyDesk running</span></label>
+      <label><input type="checkbox" id="gOtp"> <span data-i18n="g_otp">OTP arrived during the call</span></label>
+      <label><input type="checkbox" id="gSecond"> <span data-i18n="g_second">Second call coming in</span></label>
+      <label><input type="checkbox" id="gSideload"> <span data-i18n="g_side">App installed from WhatsApp file</span></label>
+    </div>
+    <button type="button" class="primary" id="guardBtn" data-i18n="simulate">Simulate</button>
+  </section>
+
+  <section id="panel-paid" class="panel" hidden>
+    <h2 data-i18n="t_paid">I already paid</h2>
+    <a class="call1930" href="tel:1930"><span data-i18n="call1930">Call 1930 now</span><small data-i18n="call1930_s">National Cyber Fraud Helpline</small></a>
+    <div class="grid2">
+      <label><span data-i18n="amount">Amount</span><input id="pdAmount" placeholder="₹"></label>
+      <label><span data-i18n="mins_ago">How many minutes ago?</span><input id="pdMins" type="number" min="0" placeholder="10"></label>
+      <label><span data-i18n="method">How did you pay?</span><select id="pdMethod"><option>UPI</option><option>Net banking / RTGS</option><option>Card</option><option>Cash / gold handed over</option><option>Other</option></select></label>
+      <label><span data-i18n="bank">Your bank</span><input id="pdBank"></label>
+      <label><span data-i18n="to_whom">To whom</span><input id="pdPayee" placeholder="UPI ID / account"></label>
+      <label><span data-i18n="txn">Transaction ID (UTR)</span><input id="pdTxn"></label>
+    </div>
+    <label><span data-i18n="what">What happened?</span><textarea id="pdWhat" rows="3"></textarea></label>
+    <label class="ghost file"><input type="file" id="pdShot" accept="image/*"><span data-i18n="attach_pay">Attach payment screenshot</span></label>
+    <div id="pdShotInfo" class="files"></div>
+    <button type="button" class="primary" id="paidBtn" data-i18n="paid_btn">Show my steps</button>
+  </section>
+
+  <section id="result" aria-live="polite"></section>
+
+  <section class="trusted">
+    <label for="trustedNum" data-i18n="trusted">Someone you trust (saved on this device only)</label>
+    <div class="row">
+      <input id="trustedName" data-i18n-ph="trusted_name" placeholder="Name, e.g. Rahul">
+      <input id="trustedNum" inputmode="tel" placeholder="+91 ...">
+    </div>
+  </section>
+</main>
+
+<div id="overlay" class="overlay" hidden role="alertdialog" aria-modal="true" aria-labelledby="ovTitle">
+  <div class="ov-card">
+    <p class="ov-level" id="ovLevel"></p>
+    <h2 id="ovTitle"></h2>
+    <p id="ovMsg"></p>
+    <ul id="ovReasons"></ul>
+    <div class="ov-actions">
+      <a id="ovCall" class="primary" hidden></a>
+      <button type="button" class="ghost" id="ovSpeak" data-i18n="read">Read aloud</button>
+      <button type="button" class="ghost" id="ovClose" data-i18n="close">Close</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p data-i18n="footer">Dhaal never says something is safe, never stores your audio, and never asks for your OTP. Prototype for the Google Cloud AI Builder Cup 2026.</p>
+</footer>
+<script src="/static/app.js"></script>
+<script src="/static/community.js"></script>
+</body>
+</html>

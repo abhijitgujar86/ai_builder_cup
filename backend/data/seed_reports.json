@@ -1,0 +1,10 @@
+[
+  {"type": "number", "value": "+919876500001", "count": 14, "categories": ["C01"], "last_seen": "2026-10-17"},
+  {"type": "number", "value": "+919876500002", "count": 6, "categories": ["C02"], "last_seen": "2026-10-16"},
+  {"type": "number", "value": "+923001234567", "count": 22, "categories": ["C16"], "last_seen": "2026-10-18"},
+  {"type": "number", "value": "+918800000999", "count": 4, "categories": ["C24"], "last_seen": "2026-10-15"},
+  {"type": "upi", "value": "rbi.verification@ybl", "count": 11, "categories": ["C01"], "last_seen": "2026-10-17"},
+  {"type": "upi", "value": "armyofficer.posted@okaxis", "count": 7, "categories": ["C22"], "last_seen": "2026-10-14"},
+  {"type": "upi", "value": "kbc.lottery.gst@paytm", "count": 9, "categories": ["C16"], "last_seen": "2026-10-12"},
+  {"type": "url", "value": "http://sbi-reward-points.xyz/claim", "count": 5, "categories": ["C09"], "last_seen": "2026-10-11"}
+]

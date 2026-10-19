@@ -1,0 +1,23 @@
+.remember/
+.playwright-mcp/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Android Studio project files (only our sources are tracked)
+android/.gradle/
+android/.idea/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+*.aab
+.env
+.env.*
+*.local.md
+docs/audit/
+.claude/settings.local.json
+*.pem
+*.key
+*-sa.json
+service-account*.json

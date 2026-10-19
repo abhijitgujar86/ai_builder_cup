@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign in · Dhaal</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 28 6.5V15c0 7-5.2 12.4-12 15C9.2 27.4 4 22 4 15V6.5Z' fill='%230b5d5b'/%3E%3Cpath d='m10.5 16 3.7 3.7 7.3-7.4' fill='none' stroke='white' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 18px; }
+  .login { width: 100%; max-width: 400px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
+  .login .brand { margin-bottom: 18px; }
+  .login .err { background: #fdecea; border-radius: 10px; padding: 10px 12px; margin: 0 0 8px; }
+  .login small { display: block; color: var(--muted); margin-top: 14px; font-size: 0.82rem; }
+</style>
+</head>
+<body>
+<div class="login-wrap">
+  <form class="login" method="post" action="/login" autocomplete="on">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <div><h1>Dhaal</h1><p class="tag">Your silent shield against scams.</p></div>
+    </div>
+    <p class="err" id="err" hidden></p>
+    <label for="username">Username</label>
+    <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required>
+    <input type="hidden" name="next" id="next" value="/">
+    <button class="primary" type="submit">Sign in</button>
+    <small>Prototype access for the Google Cloud AI Builder Cup 2026.</small>
+  </form>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const next = q.get("next");
+  if (next && next.startsWith("/") && !next.startsWith("//")) document.getElementById("next").value = next + location.hash;
+  else if (location.hash) document.getElementById("next").value = "/" + location.hash;
+  const e = q.get("error");
+  if (e) {
+    const el = document.getElementById("err");
+    el.textContent = e === "locked" ? "Too many attempts. Please wait 15 minutes." : "Wrong username or password.";
+    el.hidden = false;
+  }
+  document.getElementById("username").focus();
+</script>
+</body>
+</html>
